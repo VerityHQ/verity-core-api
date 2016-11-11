@@ -9,11 +9,194 @@
       "name" : "not open source yet"
     }
   },
+  "tags" : [ {
+    "name" : "Endpoints"
+  }, {
+    "name" : "Core Representations",
+    "description" : ""
+  } ],
   "security" : [ {
     "Basic Auth" : [ ]
   } ],
   "paths" : {
-    "/users/{userId}" : { }
+    "/actiontype" : {
+      "get" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "get an ActionType by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "create ActionType",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ActionType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "update ActionType",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/ActionType"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/organization" : {
+      "get" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "get and organization by id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "create an Organization",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Organization"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "500" : {
+            "description" : "Status 500"
+          }
+        }
+      }
+    },
+    "/person" : {
+      "get" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "get a person by id",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "multi-hash id of person record on the blockchain",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200",
+            "schema" : {
+              "$ref" : "#/definitions/Person"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "create person",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Person"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "muilti-hash blockchain id for the newly created person account",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "update person",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Person"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Status 200"
+          }
+        }
+      }
+    },
+    "/transaction" : {
+      "post" : {
+        "tags" : [ "Endpoints" ],
+        "summary" : "give reputation",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Transaction"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
   },
   "securityDefinitions" : {
     "Basic Auth" : {
@@ -27,7 +210,8 @@
       "required" : [ "ActionName", "id" ],
       "properties" : {
         "ActionName" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Can represent any type of reputation as a verb. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
         },
         "CommunityId" : {
           "type" : "string",
@@ -86,14 +270,22 @@
     "Community" : {
       "type" : "object",
       "properties" : {
+        "agents" : {
+          "type" : "array",
+          "description" : "Community agents. List of agents that may operate on behalf of the community.",
+          "items" : {
+            "$ref" : "#/definitions/Agent"
+          }
+        },
         "communityName" : {
           "type" : "string"
         },
         "hashId" : {
           "type" : "string",
-          "description" : "blockchain address"
+          "description" : "unique id of the community (could be a blockchain contract address)"
         },
         "oganization" : {
+          "description" : "The organization-agent that runs / owns the community.",
           "$ref" : "#/definitions/Organization"
         }
       }
@@ -166,7 +358,8 @@
           "description" : "entity responsible for this SoftwareAgent",
           "$ref" : "#/definitions/Agent"
         }
-      }
+      },
+      "description" : "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)"
     },
     "Transaction" : {
       "type" : "object",
@@ -181,12 +374,12 @@
           "description" : "metadata that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information."
         },
         "source" : {
-          "type" : "string",
-          "description" : "source / sender / giver of reputation value. Multi-hash agent key. Required."
+          "description" : "source / sender / giver of reputation value. Multi-hash agent key. Required.",
+          "$ref" : "#/definitions/Agent"
         },
         "target" : {
-          "type" : "string",
-          "description" : "target / recipient / receiver of reputation value. Multi-hash agent key. Required."
+          "description" : "target / recipient / receiver of reputation value. Multi-hash agent key. Required.",
+          "$ref" : "#/definitions/Agent"
         },
         "timeStamp" : {
           "type" : "string",
@@ -198,7 +391,7 @@
           "description" : "Reputation value or amount. optional. If empty the value of the transaction can be inferred by the content or context, e.g. it's a value tag."
         }
       },
-      "description" : "Similar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md\nA fundemental unit of repuation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store."
+      "description" : "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md"
     }
   }
 }
