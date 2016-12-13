@@ -1,397 +1,1192 @@
 {
-  "swagger" : "2.0",
-  "info" : {
-    "description" : "This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md",
-    "version" : "1.0.0",
-    "title" : "VerityReputation",
-    "contact" : { },
-    "license" : {
-      "name" : "not open source yet"
-    }
-  },
-  "tags" : [ {
-    "name" : "Endpoints"
-  }, {
-    "name" : "Core Representations",
-    "description" : ""
-  } ],
-  "security" : [ {
-    "Basic Auth" : [ ]
-  } ],
-  "paths" : {
-    "/actiontype" : {
-      "get" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "get an ActionType by id",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "query",
-          "required" : false,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200"
-          }
-        }
-      },
-      "post" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "create ActionType",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/ActionType"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200"
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "update ActionType",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/ActionType"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200"
-          }
-        }
-      }
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.1",
+        "title": "VerityReputation",
+        "description": "This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md This is a simple Verity reputation API. You can find out more about Verity at <a href='http://getcrystal.net'>http://getcrystal.net</a>  For this sample, you can use the api key 'special-key' for tests that need authorization (authorization filters).\n\nWhere possible we specify multi-hashes as unique identifiers that can be used by distributed cryptographically secure systems (blockchains)\nWhere possible we specify hyper-media links (e.g. JSON-LD) to describe data that is linked in graph structures by nature (blockchain data, IPFS data, etc.)\n\nAgents, Entity and Activity should map to provenance ontology described in https://www.w3.org/TR/prov-o\nTransaction is an implementation that maps to TrustAtoms. https://github.com/CoMakery/trust-exchange/blob/master/README.md"
     },
-    "/organization" : {
-      "get" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "get and organization by id",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "query",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200"
-          }
+    "host": "springserver.cfapps.io",
+    "basePath": "/verity/core",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "verity_auth_token": {
+            "name": "verity_auth_token",
+            "type": "apiKey",
+            "in": "query"
+        },
+        "Basic Auth": {
+            "type": "basic",
+            "description": "Basic Authentication for now while we build and test the api"
         }
-      },
-      "post" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "create an Organization",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/Organization"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200",
-            "schema" : {
-              "type" : "string"
+    },
+    "paths": {
+        "/valueaction": {
+            "post": {
+                "operationId": "POST_valueaction",
+                "summary": "create ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "POST_valueaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
             }
-          },
-          "500" : {
-            "description" : "Status 500"
-          }
-        }
-      }
-    },
-    "/person" : {
-      "get" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "get a person by id",
-        "produces" : [ "application/json" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "query",
-          "description" : "multi-hash id of person record on the blockchain",
-          "required" : true,
-          "type" : "string"
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200",
-            "schema" : {
-              "$ref" : "#/definitions/Person"
+        },
+        "/valueaction/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_valueaction",
+                "summary": "get ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_valueaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT_valueaction",
+                "summary": "update ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/valueaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "",
+                        "schema": {}
+                    }
+                },
+                "x-stoplight": {
+                    "id": "PUT_valueaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "DELETE_valueaction",
+                "summary": "archive ValueAction",
+                "tags": [
+                    "ValueAction"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "",
+                        "schema": {}
+                    }
+                },
+                "x-stoplight": {
+                    "id": "DELETE_valueaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
             }
-          }
-        }
-      },
-      "post" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "create person",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/Person"
-          }
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "muilti-hash blockchain id for the newly created person account",
-            "schema" : {
-              "type" : "string"
+        },
+        "/actiontype": {
+            "post": {
+                "operationId": "POST_actiontype",
+                "summary": "create ActionType",
+                "tags": [
+                    "Endpoints",
+                    "ActionType"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Status 200",
+                        "schema": {
+                            "allOf": []
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "POST_actiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
             }
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "update person",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/Person"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Status 200"
-          }
-        }
-      }
-    },
-    "/transaction" : {
-      "post" : {
-        "tags" : [ "Endpoints" ],
-        "summary" : "give reputation",
-        "consumes" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "required" : false,
-          "schema" : {
-            "$ref" : "#/definitions/Transaction"
-          }
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.",
-            "schema" : {
-              "type" : "string"
+        },
+        "/actiontype/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_actiontype",
+                "summary": "get ActionType",
+                "tags": [
+                    "Endpoints",
+                    "ActionType"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_actiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT_actiontype",
+                "summary": "update ActionType",
+                "tags": [
+                    "Endpoints",
+                    "ActionType"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ActionType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "PUT_actiontype",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
             }
-          }
+        },
+        "/organization": {
+            "post": {
+                "operationId": "POST_organization",
+                "summary": "create an Organization",
+                "tags": [
+                    "Endpoints",
+                    "Organization"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "description": "Status 500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "POST_organization",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/organization/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_organization",
+                "summary": "get organization",
+                "tags": [
+                    "Endpoints",
+                    "Organization"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Organization"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_organization",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/person": {
+            "post": {
+                "operationId": "POST_person",
+                "summary": "create person",
+                "tags": [
+                    "Endpoints",
+                    "Person"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "muilti-hash blockchain id for the newly created person account",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "POST_person",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            },
+            "put": {
+                "operationId": "PUT_person",
+                "summary": "update person",
+                "tags": [
+                    "Endpoints",
+                    "Person"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "PUT_person",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/person/{id}": {
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_person",
+                "summary": "get Person",
+                "tags": [
+                    "Endpoints",
+                    "Person"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "multi-hash id of person record on the blockchain",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status 200",
+                        "schema": {
+                            "$ref": "#/definitions/Person"
+                        }
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_person",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/transaction": {
+            "post": {
+                "operationId": "POST_transaction",
+                "summary": "create transaction",
+                "tags": [
+                    "Endpoints",
+                    "Transaction"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "hash - Ethereum address of the transaction. For demo / proof of concept this will be a db id or offchain hash.",
+                        "schema": {
+                            "$ref": "#/definitions/Transaction"
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "POST_transaction",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "statusCode": 200,
+                        "enabled": false
+                    }
+                }
+            }
+        },
+        "/transaction/{targetAgentId}": {
+            "parameters": [
+                {
+                    "name": "targetAgentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_transactionbytargetagentid",
+                "summary": "get Transactions by targetAgentId",
+                "tags": [
+                    "Transaction"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_transactionbytargetagentid",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
+        },
+        "/transaction/{targetAgentId}/{startDate}/{endDate}": {
+            "parameters": [
+                {
+                    "name": "targetAgentId",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "name": "startDate",
+                    "in": "path",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "operationId": "GET_transactions",
+                "summary": "get Transactions by Dates",
+                "tags": [
+                    "Transaction"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Transaction"
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/responses/trait:standardErrors:401"
+                    },
+                    "403": {
+                        "$ref": "#/responses/trait:standardErrors:403"
+                    },
+                    "404": {
+                        "$ref": "#/responses/trait:standardErrors:404"
+                    },
+                    "500": {
+                        "$ref": "#/responses/trait:standardErrors:500"
+                    }
+                },
+                "x-stoplight": {
+                    "id": "GET_transactions",
+                    "beforeScript": null,
+                    "afterScript": null,
+                    "public": true,
+                    "mock": {
+                        "enabled": false,
+                        "dynamic": false,
+                        "statusCode": 200
+                    }
+                }
+            }
         }
-      }
-    }
-  },
-  "securityDefinitions" : {
-    "Basic Auth" : {
-      "description" : "Basic Authentication for now while we build and test the api",
-      "type" : "basic"
-    }
-  },
-  "definitions" : {
-    "ActionType" : {
-      "type" : "object",
-      "required" : [ "ActionName", "id" ],
-      "properties" : {
-        "ActionName" : {
-          "type" : "string",
-          "description" : "Can represent any type of reputation as a verb. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
-        },
-        "CommunityId" : {
-          "type" : "string",
-          "description" : "Community that defined this ActionType. Multi-hash or JSON-LD"
-        },
-        "DefaultPoints" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "points to award in default case"
-        },
-        "id" : {
-          "type" : "string",
-          "description" : "multi hash id"
-        }
-      },
-      "description" : "represents the type of action performed when giving reputation, e.g. upvote, points, rating"
     },
-    "Activity" : {
-      "type" : "object",
-      "required" : [ "end", "name", "start" ],
-      "properties" : {
-        "end" : {
-          "type" : "string",
-          "format" : "date",
-          "description" : "Could correspond to a block number in the blockchain"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "start" : {
-          "type" : "string",
-          "format" : "date",
-          "description" : "Could correspond to a block number in the blockchain"
+    "parameters": {
+        "trait:checkGas:checkGas": {
+            "name": "checkGas",
+            "in": "header",
+            "type": "string"
         }
-      },
-      "description" : "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities. \n\nMaps to https://www.w3.org/TR/prov-o/  prov:Activity"
     },
-    "Agent" : {
-      "type" : "object",
-      "required" : [ "hashId" ],
-      "properties" : {
-        "hashId" : {
-          "type" : "string",
-          "description" : "hash or blockchain address"
+    "responses": {
+        "trait:standardErrors:401": {
+            "description": ""
         },
-        "key" : {
-          "type" : "string"
+        "trait:standardErrors:403": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "message"
+                ]
+            }
         },
-        "url" : {
-          "type" : "string",
-          "description" : "URL"
+        "trait:standardErrors:404": {
+            "description": "",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "error": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "status",
+                    "error"
+                ]
+            }
+        },
+        "trait:standardErrors:500": {
+            "description": ""
         }
-      },
-      "description" : "Agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity. An Agent could be software, person, organization, device.\n\nMaps to  https://www.w3.org/TR/prov-o/#Agent  prov:Agent"
     },
-    "Community" : {
-      "type" : "object",
-      "properties" : {
-        "agents" : {
-          "type" : "array",
-          "description" : "Community agents. List of agents that may operate on behalf of the community.",
-          "items" : {
-            "$ref" : "#/definitions/Agent"
-          }
+    "definitions": {
+        "ActionType": {
+            "type": "object",
+            "description": "represents the type of action performed when giving reputation, e.g. upvote, points, rating",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH or MultiHash that represents this object",
+                    "format": "uuid"
+                },
+                "actionName": {
+                    "type": "string",
+                    "description": "Can represent any type of reputation as a verb. Use verb to describe act of giving or rating, e.g. upvote, give points, tagged, rate."
+                },
+                "communityId": {
+                    "type": "string",
+                    "description": "Community that defined this ActionType. Multi-hash or JSON-LD"
+                },
+                "defaultPoints": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "points to award in default case"
+                },
+                "content": {
+                    "type": "string",
+                    "description": "Describes this action in detail. Formatted as JSON or JSON:LD. Should include the ActionName along with a longer description or link to more content."
+                }
+            },
+            "required": [
+                "actionName",
+                "communityId"
+            ],
+            "x-stoplight": {
+                "id": "ActionType",
+                "name": "ActionType",
+                "public": true
+            }
         },
-        "communityName" : {
-          "type" : "string"
+        "Community": {
+            "type": "object",
+            "properties": {
+                "agents": {
+                    "type": "array",
+                    "description": "Community agents. List of agents that may operate on behalf of the community.",
+                    "items": {
+                        "$ref": "#/definitions/Agent"
+                    }
+                },
+                "communityName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH or MultiHash that represents this object.",
+                    "format": "uuid"
+                },
+                "oganization": {
+                    "$ref": "#/definitions/Organization"
+                }
+            },
+            "x-stoplight": {
+                "id": "Community",
+                "name": "Community",
+                "public": true
+            }
         },
-        "hashId" : {
-          "type" : "string",
-          "description" : "unique id of the community (could be a blockchain contract address)"
+        "Person": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "nickName": {
+                    "type": "string"
+                },
+                "organizationId": {
+                    "type": "string"
+                },
+                "agentId": {
+                    "$ref": "#/definitions/Agent"
+                }
+            },
+            "required": [
+                "agentId"
+            ],
+            "x-stoplight": {
+                "id": "Person",
+                "name": "Person",
+                "public": true
+            }
         },
-        "oganization" : {
-          "description" : "The organization-agent that runs / owns the community.",
-          "$ref" : "#/definitions/Organization"
+        "Activity": {
+            "type": "object",
+            "required": [
+                "end",
+                "name",
+                "start"
+            ],
+            "properties": {
+                "end": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Could correspond to a block number in the blockchain"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "start": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Could correspond to a block number in the blockchain"
+                }
+            },
+            "description": "Activity is something that occurs over a period of time and acts upon or with entities; it may include consuming, processing, transforming, modifying, relocating, using, or generating entities. \n\nMaps to https://www.w3.org/TR/prov-o/  prov:Activity",
+            "x-stoplight": {
+                "id": "Activity",
+                "name": "Activity",
+                "public": true
+            }
+        },
+        "SoftwareAgent": {
+            "type": "object",
+            "required": [
+                "apiUrl",
+                "name"
+            ],
+            "properties": {
+                "apiUrl": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "ownedBy": {
+                    "description": "entity responsible for this SoftwareAgent",
+                    "$ref": "#/definitions/Agent"
+                }
+            },
+            "description": "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)",
+            "x-stoplight": {
+                "id": "SoftwareAgent",
+                "name": "SoftwareAgent",
+                "public": true
+            }
+        },
+        "Transaction": {
+            "type": "object",
+            "description": "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md",
+            "properties": {
+                "valueActionId": {
+                    "type": "string",
+                    "description": "link that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information.",
+                    "format": "uuid"
+                },
+                "sourceAgentId": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "targetAgentId": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "timeStamp": {
+                    "type": "string",
+                    "description": "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning.",
+                    "format": "date-time"
+                },
+                "value": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "value (points) given at the time of the transaction. Immutable. Use ValueActionId to get the 'current' value if adjusting points retroactivly."
+                },
+                "id": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            },
+            "required": [
+                "valueActionId",
+                "sourceAgentId",
+                "targetAgentId"
+            ],
+            "x-stoplight": {
+                "id": "Transaction",
+                "name": "Transaction",
+                "public": true
+            }
+        },
+        "Content": {
+            "type": "object",
+            "description": "Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.\n\nMaps to https://www.w3.org/TR/prov-o/  prov:Entity",
+            "properties": {
+                "hashId": {
+                    "type": "string",
+                    "description": "multihash"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "name or tag"
+                },
+                "body": {
+                    "type": "string",
+                    "description": "content as text or JSON"
+                },
+                "nodes": {
+                    "type": "array",
+                    "description": "child nodes",
+                    "items": {
+                        "$ref": "#/definitions/Content"
+                    }
+                }
+            },
+            "required": [
+                "hashId",
+                "name"
+            ],
+            "x-stoplight": {
+                "id": "Content",
+                "name": "Content",
+                "public": true
+            }
+        },
+        "Agent": {
+            "type": "object",
+            "description": "Agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity. An Agent could be software, person, organization, device.\n\nMaps to  https://www.w3.org/TR/prov-o/#Agent  prov:Agent",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH or MultiHash that represents this object"
+                },
+                "publicKey": {
+                    "type": "string"
+                },
+                "links": {
+                    "type": "array",
+                    "description": "zero or more attestation URLs (twitter post, FB post, blog, etc.)\nExamples at: https://keybase.io/",
+                    "items": {
+                        "type": [
+                            "string",
+                            "array"
+                        ],
+                        "items": {}
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "publicKey"
+            ],
+            "x-stoplight": {
+                "id": "Agent",
+                "name": "Agent",
+                "public": true
+            }
+        },
+        "Organization": {
+            "type": "object",
+            "properties": {
+                "orgName": {
+                    "type": "string"
+                },
+                "agent": {
+                    "$ref": "#/definitions/Agent"
+                },
+                "content": {
+                    "$ref": "#/definitions/Content"
+                }
+            },
+            "required": [
+                "agent",
+                "orgName"
+            ],
+            "x-stoplight": {
+                "id": "Organization",
+                "name": "Organization",
+                "public": true
+            }
+        },
+        "valueaction": {
+            "type": "object",
+            "description": "ValueAction describes the action taken and the associated value (points) awarded. Value can be retroactivly changed to adjust point distribution after the transaction has been recorded.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "UUID, GUID, HASH or MultiHash that represents this object"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Describes this action. Formatted as JSON or JSON:LD. Should include a short 'tag' and optionally a longer description or link to more content."
+                },
+                "value": {
+                    "type": "integer",
+                    "description": "the value awarded. Can be changed at any time. Changes to value will affect all transactions to date that have been created with this ValueAction."
+                },
+                "actionTypeId": {
+                    "type": "string",
+                    "description": "the  UUID of the actionType"
+                },
+                "archived": {
+                    "type": "boolean",
+                    "default": 0
+                }
+            },
+            "required": [
+                "id",
+                "description",
+                "archived"
+            ],
+            "x-stoplight": {
+                "id": "valueaction",
+                "name": "ValueAction",
+                "public": true
+            }
         }
-      }
     },
-    "Entity" : {
-      "type" : "object",
-      "properties" : {
-        "hashId" : {
-          "type" : "string",
-          "description" : "multihash"
+    "x-stoplight": {
+        "beforeScript": "",
+        "afterScript": "",
+        "version": {
+            "groups": {
+                "utilFuncs": [],
+                "docs": [
+                    {
+                        "name": "ValueAction",
+                        "items": [
+                            {
+                                "type": "endpoints",
+                                "_id": "POST_valueaction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "GET_valueaction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "PUT_valueaction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "DELETE_valueaction"
+                            }
+                        ],
+                        "divider": false
+                    },
+                    {
+                        "divider": false,
+                        "name": "ActionType",
+                        "items": [
+                            {
+                                "_id": "POST_actiontype",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "GET_actiontype",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "PUT_actiontype",
+                                "type": "endpoints"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Organization",
+                        "items": [
+                            {
+                                "_id": "POST_organization",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "GET_organization",
+                                "type": "endpoints"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Person",
+                        "items": [
+                            {
+                                "_id": "POST_person",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "GET_person",
+                                "type": "endpoints"
+                            },
+                            {
+                                "_id": "PUT_person",
+                                "type": "endpoints"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Transaction",
+                        "items": [
+                            {
+                                "_id": "POST_transaction",
+                                "type": "endpoints"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "GET_transaction"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "GET_transactions"
+                            },
+                            {
+                                "type": "endpoints",
+                                "_id": "GET_transactionbytargetagentid"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Models",
+                        "description": "Models make up the core input and ouput structures in this API. They are used in endpoint request and response bodies.",
+                        "items": [
+                            {
+                                "_id": "Organization",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Community",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Person",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "SoftwareAgent",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Agent",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "ActionType",
+                                "type": "schemas"
+                            },
+                            {
+                                "type": "schemas",
+                                "_id": "valueaction"
+                            },
+                            {
+                                "_id": "Transaction",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Content",
+                                "type": "schemas"
+                            },
+                            {
+                                "_id": "Activity",
+                                "type": "schemas"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Traits",
+                        "items": [
+                            {
+                                "type": "traits",
+                                "_id": "checkGas"
+                            },
+                            {
+                                "type": "traits",
+                                "_id": "standardErrors"
+                            }
+                        ],
+                        "divider": false
+                    }
+                ],
+                "savedEntries": []
+            }
         },
-        "name" : {
-          "type" : "string",
-          "description" : "name of the thing"
-        },
-        "nodes" : {
-          "type" : "array",
-          "description" : "next level of the tree",
-          "items" : {
-            "$ref" : "#/definitions/Entity"
-          }
+        "functions": {},
+        "textSections": {},
+        "mock": {
+            "enabled": false,
+            "dynamic": false
         }
-      },
-      "description" : "Self describing content (document object model, JSON-LD) A physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.\n\nMaps to https://www.w3.org/TR/prov-o/  prov:Entity"
     },
-    "Organization" : {
-      "type" : "object",
-      "required" : [ "agent", "orgName" ],
-      "properties" : {
-        "agent" : {
-          "$ref" : "#/definitions/Agent"
-        },
-        "orgName" : {
-          "type" : "string"
-        }
-      }
-    },
-    "Person" : {
-      "type" : "object",
-      "required" : [ "agent" ],
-      "properties" : {
-        "FirstName" : {
-          "type" : "string"
-        },
-        "LastName" : {
-          "type" : "string"
-        },
-        "NickName" : {
-          "type" : "string"
-        },
-        "Organization" : {
-          "$ref" : "#/definitions/Organization"
-        },
-        "agent" : {
-          "$ref" : "#/definitions/Agent"
-        }
-      }
-    },
-    "SoftwareAgent" : {
-      "type" : "object",
-      "required" : [ "apiUrl", "name" ],
-      "properties" : {
-        "apiUrl" : {
-          "type" : "string"
-        },
-        "name" : {
-          "type" : "string"
-        },
-        "ownedBy" : {
-          "description" : "entity responsible for this SoftwareAgent",
-          "$ref" : "#/definitions/Agent"
-        }
-      },
-      "description" : "Bot, smart contract, or software that has agency in the reputation ecosystem (can give and receive reputation)"
-    },
-    "Transaction" : {
-      "type" : "object",
-      "required" : [ "source", "target" ],
-      "properties" : {
-        "content" : {
-          "type" : "string",
-          "description" : "describes or defines the type of reputation being given (points, karma, score) or the action performed (action-type) during rating, e.g. upvote, like. Could be a link or content addressable graph pointing to a richer source of description such as a set of tags."
-        },
-        "context" : {
-          "type" : "string",
-          "description" : "metadata that describes the way this score was derived, or the community feature that affects the way the value will be interpreted. Could be a link or content addressable graph pointing to a richer source of description or information."
-        },
-        "source" : {
-          "description" : "source / sender / giver of reputation value. Multi-hash agent key. Required.",
-          "$ref" : "#/definitions/Agent"
-        },
-        "target" : {
-          "description" : "target / recipient / receiver of reputation value. Multi-hash agent key. Required.",
-          "$ref" : "#/definitions/Agent"
-        },
-        "timeStamp" : {
-          "type" : "string",
-          "description" : "timestamp or block height of blockchain at time of creation. Should be self-describing as to format and meaning."
-        },
-        "value" : {
-          "type" : "integer",
-          "format" : "int32",
-          "description" : "Reputation value or amount. optional. If empty the value of the transaction can be inferred by the content or context, e.g. it's a value tag."
-        }
-      },
-      "description" : "A fundamental unit of reputation transfer. Represents a singular event that transfers or bestows reputation to the target/recipient. The sender/source can be a person, software agent, organization or the like. Intended to be independent of database or blockchain so all IDs should be globally identifiable hashes in multi-hash format pointing to the canonical representation or permanent public store.\n\nSimilar to and should map to TrustAtom https://github.com/CoMakery/trust-exchange/blob/master/README.md"
-    }
-  }
+    "x-tests": {}
 }
